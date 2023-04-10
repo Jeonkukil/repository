@@ -6,11 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +25,7 @@ public class User {
     private String username;
     private String password;
     private String email;
+    private String role; // USER, MANGER, ADMIN
     private Boolean status; // true , false 활성, 비활성
 
 
@@ -33,13 +34,28 @@ public class User {
     private LocalDateTime updateAt;
 
 
-    @PrePersist
+    @PrePersist // insert 시에 동작
     public void onCreate() {
         this.createdAt = LocalDateTime.now();
     }
 
-    @PreUpdate
+    @PreUpdate // update 시에 동작
     public void onUpdate() {
         this.updateAt = LocalDateTime.now();
     }
+
+    @Builder
+    public User(Long id, String username, String password, String email, String role, Boolean status,
+            LocalDateTime createdAt, LocalDateTime updateAt) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updateAt = updateAt;
+    }
+
+  
 }
